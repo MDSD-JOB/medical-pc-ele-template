@@ -7,7 +7,6 @@
     "dev": "vue-cli-service serve",
     "lint": "eslint --ext .js,.vue src",
     "build:prod": "vue-cli-service build",
-    "build:stage": "vue-cli-service build --mode staging",
     "preview": "node build/index.js --preview",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
     "test:unit": "jest --clearCache && vue-cli-service test:unit",

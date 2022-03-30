@@ -10,14 +10,21 @@
     >
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)">
-          <item :title="onlyOneChild.meta.title" />
+          <item
+            :title="onlyOneChild.meta.title"
+            :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
+          />
         </el-menu-item>
       </app-link>
     </template>
 
     <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)">
       <template slot="title">
-        <item v-if="item.meta" :title="item.meta.title" />
+        <item
+          v-if="item.meta"
+          :title="item.meta.title"
+          :icon="item.meta && item.meta.icon"
+        />
         <!-- 增加固定宽度防止箭头被遮挡-->
         <div style="display: inline-block; width: 20px" />
       </template>
