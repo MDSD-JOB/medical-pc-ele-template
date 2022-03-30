@@ -13,27 +13,20 @@
         <navbar />
 
         <!--当 menuInLeft===false，左菜单栏隐藏，顶部显示-->
-        <headerbar v-if="!menuInLeft" />
 
-        <tags-view v-if="needTagsView" />
+        <!-- <tags-view v-if="needTagsView" /> -->
       </div>
       <app-main />
-      <right-panel v-if="showSettings">
-        <settings />
-      </right-panel>
     </div>
   </div>
 </template>
 
 <script>
-import RightPanel from '@/components/RightPanel'
 import {
   AppMain,
   Navbar,
-  Settings,
-  Headerbar,
-  Sidebar,
-  TagsView
+  Sidebar
+  // TagsView
 } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 import { mapState } from 'vuex'
@@ -43,11 +36,8 @@ export default {
   components: {
     AppMain,
     Navbar,
-    RightPanel,
-    Settings,
-    Headerbar,
-    Sidebar,
-    TagsView
+    Sidebar
+    // TagsView
   },
   mixins: [ResizeMixin],
   computed: {

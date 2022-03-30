@@ -1,11 +1,11 @@
 <template>
   <el-scrollbar wrap-class="scrollbar-wrapper">
     <el-menu
+      mode="horizontal"
       :default-active="activeMenu"
       :background-color="variables.menuBg"
       :text-color="variables.menuText"
       :active-text-color="variables.menuActiveText"
-      mode="horizontal"
     >
       <sidebar-item
         v-for="route in permission_routes"
@@ -30,7 +30,6 @@ export default {
     activeMenu() {
       const route = this.$route
       const { meta, path } = route
-      // if set path, the sidebar will highlight the path you set
       if (meta.activeMenu) {
         return meta.activeMenu
       }

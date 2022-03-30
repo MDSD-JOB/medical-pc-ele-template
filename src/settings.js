@@ -25,7 +25,7 @@ module.exports = {
    */
   sidebarLogo: false,
 
-  menuInLeft: true,
+  menuInLeft: false,
 
   /**
    * @type {string | array} 'production' | ['production', 'development']

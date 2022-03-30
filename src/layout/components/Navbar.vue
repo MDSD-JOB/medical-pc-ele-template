@@ -8,19 +8,13 @@
       @toggleClick="toggleSideBar"
     />
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+    <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" /> -->
+
+    <headbar v-if="!menuInLeft" style="width: 100%" />
 
     <div class="right-menu">
       <template v-if="device !== 'mobile'">
-        <search id="header-search" class="right-menu-item" />
-
-        <error-log class="errLog-container right-menu-item hover-effect" />
-
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
-        <el-tooltip content="Global Size" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
-        </el-tooltip>
       </template>
 
       <el-dropdown
@@ -32,58 +26,33 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/profile/index">
-            <el-dropdown-item>Profile</el-dropdown-item>
-          </router-link>
-          <router-link to="/">
-            <el-dropdown-item>Dashboard</el-dropdown-item>
-          </router-link>
-          <a
-            target="_blank"
-            href="https://github.com/PanJiaChen/vue-element-admin/"
-          >
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <a
-            target="_blank"
-            href="https://panjiachen.github.io/vue-element-admin-site/#/"
-          >
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
-          <el-dropdown-item divided @click.native="logout">
-            <span style="display: block">Log Out</span>
+          <el-dropdown-item @click.native="logout">
+            <span style="display: block">退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <headerbar v-if="!menuInLeft" style="width: 100%" />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
+// import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
-import SizeSelect from '@/components/SizeSelect'
-import Search from '@/components/HeaderSearch'
-import Headerbar from '@/layout/components/Headerbar'
+import Headbar from '@/layout/components/Headbar'
 
 export default {
   components: {
-    Breadcrumb,
+    // Breadcrumb,
     Hamburger,
-    ErrorLog,
     Screenfull,
-    SizeSelect,
-    Search,
-    Headerbar
+    Headbar
   },
   computed: {
     ...mapGetters(['sidebar', 'avatar', 'device']),
     ...mapState({
-      menuInLeft: (state) => state.setting.menuInLeft
+      menuInLeft: (state) => state.settings.menuInLeft
     })
   },
   methods: {
@@ -132,7 +101,9 @@ export default {
     float: right;
     height: 100%;
     line-height: 50px;
-
+    position: absolute;
+    top: 0;
+    right: 0;
     &:focus {
       outline: none;
     }
@@ -142,7 +113,7 @@ export default {
       padding: 0 8px;
       height: 100%;
       font-size: 18px;
-      color: #5a5e66;
+      color: #fff;
       vertical-align: text-bottom;
 
       &.hover-effect {
