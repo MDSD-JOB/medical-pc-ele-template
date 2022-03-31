@@ -18,7 +18,13 @@
         trigger="click"
       >
         <div class="avatar-wrapper">
-          <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar">
+          <img
+            :src="
+              userInfo.avatar ||
+                'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
+            "
+            class="user-avatar"
+          >
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -44,7 +50,7 @@ export default {
     Headbar
   },
   computed: {
-    ...mapGetters(['sidebar', 'avatar', 'device']),
+    ...mapGetters(['sidebar', 'userInfo', 'device']),
     ...mapState({
       menuInLeft: (state) => state.settings.menuInLeft
     })

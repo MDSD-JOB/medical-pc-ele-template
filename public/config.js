@@ -1,1 +1,2 @@
-var GLOBAL_APP_API_BASE_URL = '/dev-api'
+var GLOBAL_APP_API_BASE_URL = 'http://192.168.104.114:8094/stroke'
+var GLOBAL_APP_PROJECT_NAME = '急救'

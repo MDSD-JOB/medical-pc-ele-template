@@ -1,26 +1,26 @@
 <template>
-  <el-scrollbar wrap-class="scrollbar-wrapper">
-    <div class="headbar">
-      <div class="logo-wrapper">
-        <img :src="logo" alt="logo">
-        <img :src="badge" alt="badge">
-      </div>
-      <el-menu
-        mode="horizontal"
-        :default-active="activeMenu"
-        :background-color="variables.headMenuBg"
-        :text-color="variables.headMenuText"
-        :active-text-color="variables.headMenuActiveText"
-      >
-        <sidebar-item
-          v-for="route in permission_routes"
-          :key="route.path"
-          :item="route"
-          :base-path="route.path"
-        />
-      </el-menu>
+  <div class="headbar">
+    <div class="logo-wrapper">
+      <img :src="logo" alt="logo">
+      <el-divider direction="vertical" />
+      <img :src="badge" alt="badge">
+      <h1>{{ projectTitle }}</h1>
     </div>
-  </el-scrollbar>
+    <el-menu
+      mode="horizontal"
+      :default-active="activeMenu"
+      :background-color="variables.headMenuBg"
+      :text-color="variables.headMenuText"
+      :active-text-color="variables.headMenuActiveText"
+    >
+      <sidebar-item
+        v-for="route in permission_routes"
+        :key="route.path"
+        :item="route"
+        :base-path="route.path"
+      />
+    </el-menu>
+  </div>
 </template>
 
 <script>
@@ -34,7 +34,11 @@ export default {
   data() {
     return {
       logo: require('@/assets/images/headbar/logo.png'),
-      badge: require('@/assets/images/headbar/logo_docare.png')
+      badge: require('@/assets/images/headbar/logo_docare.png'),
+      projectTitle:
+        window.GLOBAL_APP_PROJECT_NAME ||
+        process.env.VUE_APP_PROJECT_NAME ||
+        '麦迪斯顿'
     }
   },
   computed: {
@@ -63,12 +67,35 @@ export default {
 .headbar {
   display: flex;
   align-items: center;
+  padding: 0 20px;
+  height: 100%;
   .logo-wrapper {
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+    .el-divider {
+      height: 40px;
+      line-height: 50px;
+    }
     img {
       width: 150px;
       height: 40px;
       line-height: 50px;
     }
+    h1 {
+      font-size: 22px;
+      margin: 13px 0 0 9px;
+      line-height: 22px;
+      color: #444fdb;
+      font-weight: 600;
+      letter-spacing: 0.24px;
+    }
+  }
+  .el-menu {
+    width: 1400px;
+    overflow-x: auto;
+    display: flex;
+    flex-wrap: nowrap;
   }
 }
 </style>

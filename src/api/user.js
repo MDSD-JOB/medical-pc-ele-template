@@ -1,24 +1,37 @@
 import request from '@/utils/request'
+const userApi = {
+  Access: '/oauth2/password',
+  Login: '/authority/me',
+  GetUserBackMenu: '/resource/resources_by_user',
+  GetAllSource: 'authority/clientresourcelist'
+}
 
-export function login(data) {
+export function access(parameter) {
   return request({
-    url: '/vue-element-admin/user/login',
+    url: userApi.Access,
     method: 'post',
-    data
+    params: parameter
   })
 }
 
-export function getInfo(token) {
+export function login(parameter) {
   return request({
-    url: '/vue-element-admin/user/info',
+    url: userApi.Login,
     method: 'get',
-    params: { token }
+    data: parameter
   })
 }
 
-export function logout() {
+export function getUserBackMenu() {
   return request({
-    url: '/vue-element-admin/user/logout',
-    method: 'post'
+    url: userApi.GetUserBackMenu,
+    method: 'get'
+  })
+}
+
+export function getAllSource() {
+  return request({
+    url: userApi.GetAllSource,
+    method: 'get'
   })
 }

@@ -1,100 +1,116 @@
-import { login, logout, getInfo } from '@/api/user'
+import { access, login, getUserBackMenu, getAllSource } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
 const state = {
   token: getToken(),
-  name: '',
-  avatar: '',
-  introduction: '',
-  roles: []
+  roles: [],
+  allSource: [],
+  userSource: [],
+  permissions: [],
+  info: {}
 }
 
 const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
   },
-  SET_INTRODUCTION: (state, introduction) => {
-    state.introduction = introduction
-  },
-  SET_NAME: (state, name) => {
-    state.name = name
-  },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
-  },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_PERMISSION: (state, data) => {
+    state.permissions = data
+  },
+  SET_ALL_SOURCE: (state, data) => {
+    state.allSource = data
+  },
+  SET_USER_SOURCE: (state, data) => {
+    state.userSource = data
+  },
+  SET_INFO: (state, info) => {
+    state.info = info
   }
 }
 
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
-    return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+    // eslint-disable-next-line
+    return new Promise(async (resolve, reject) => {
+      try {
+        const params = {
+          ...userInfo,
+          grant_type: process.env.VUE_APP_GRANT_TYPE,
+          client_id: process.env.VUE_APP_CLIENT_ID,
+          client_secret: process.env.VUE_APP_CLIENT_SECRET
+        }
+        const tokenRes = await access(params)
+        const accessToken = tokenRes.result.accessToken
+        commit('SET_TOKEN', accessToken)
+        setToken(accessToken)
         resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      } catch (error) {
+        throw new Error(error)
+      }
     })
   },
 
   // get user info
   getInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
-
-        if (!data) {
-          reject('Verification failed, please Login again.')
-        }
-
-        const { roles, name, avatar, introduction } = data
-
-        // roles must be a non-empty array
-        if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
-        }
-
-        commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        commit('SET_INTRODUCTION', introduction)
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
+    // eslint-disable-next-line
+    return new Promise(async (resolve, reject) => {
+      getAllSource()
+        .then((response) => {
+          commit('SET_ALL_SOURCE', response.result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+      getUserBackMenu()
+        .then((response) => {
+          commit('SET_USER_SOURCE', response.result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+      await login()
+        .then((response) => {
+          const permissions = response.result.permissions
+          const user = response.result.user
+          commit('SET_ROLES', permissions)
+          commit('SET_PERMISSION', permissions)
+          commit('SET_INFO', user)
+          resolve(permissions)
+        })
+        .catch((error) => {
+          reject(error)
+        })
     })
   },
 
   // user logout
   logout({ commit, state, dispatch }) {
-    return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        commit('SET_TOKEN', '')
-        commit('SET_ROLES', [])
-        removeToken()
-        resetRouter()
+    return new Promise((resolve) => {
+      commit('SET_TOKEN', '')
+      commit('SET_ROLES', [])
+      commit('SET_PERMISSION', [])
+      commit('SET_ALL_SOURCE', [])
+      commit('SET_USER_SOURCE', [])
+      commit('SET_INFO', null)
+      removeToken()
+      resetRouter()
 
-        // reset visited views and cached views
-        // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
-        dispatch('tagsView/delAllViews', null, { root: true })
+      // reset visited views and cached views
+      // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
+      dispatch('tagsView/delAllViews', null, { root: true })
 
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      resolve()
     })
   },
 
   // remove token
   resetToken({ commit }) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
       removeToken()
@@ -114,7 +130,9 @@ const actions = {
     resetRouter()
 
     // generate accessible routes map based on roles
-    const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
+    const accessRoutes = await dispatch('permission/generateRoutes', roles, {
+      root: true
+    })
     // dynamically add accessible routes
     router.addRoutes(accessRoutes)
 

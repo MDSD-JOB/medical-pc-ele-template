@@ -65,7 +65,15 @@ export const constantRoutes = [
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true
-  },
+  }
+]
+
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes = [
+  /** when your routing map is too long, you can split it into small modules **/
   {
     path: '/',
     component: Layout,
@@ -75,7 +83,12 @@ export const constantRoutes = [
         path: 'home',
         component: () => import('@/views/dashboard/index'),
         name: 'Home',
-        meta: { title: '首页', icon: 'el-icon-s-home', affix: true }
+        meta: {
+          title: '首页',
+          icon: 'el-icon-s-home',
+          affix: true,
+          permission: ['pc_home']
+        }
       }
     ]
   },
@@ -88,19 +101,14 @@ export const constantRoutes = [
         path: 'test',
         component: () => import('@/views/dashboard/index'),
         name: 'Test',
-        meta: { title: '测试', icon: 'el-icon-eleme', affix: true }
+        meta: {
+          title: '测试',
+          icon: 'el-icon-eleme',
+          permission: ['test']
+        }
       }
     ]
-  }
-]
-
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
-export const asyncRoutes = [
-  /** when your routing map is too long, you can split it into small modules **/
-
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
