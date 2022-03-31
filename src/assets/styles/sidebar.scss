@@ -91,6 +91,40 @@
     }
   }
 
+  .headbar-wrapper {
+    .el-menu-item {
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover {
+        background-color: $headMenuHover !important;
+      }
+    }
+
+    .submenu-title-noDropdown,
+    .el-submenu__title {
+      &:hover {
+        background-color: $headMenuHover !important;
+      }
+    }
+
+    .el-menu-item.is-active {
+      background-color: $headMenuText !important;
+    }
+
+    & .el-submenu>.el-submenu__title,
+    & .el-submenu .el-menu-item {
+      min-width: $sideBarWidth !important;
+      background-color: $headSubMenuBg !important;
+
+      &:hover {
+        background-color: $headSubMenuHover !important;
+      }
+    }
+
+  }
+
   .hideSidebar {
     .sidebar-container {
       width: 54px !important;

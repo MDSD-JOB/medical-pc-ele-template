@@ -10,13 +10,9 @@
 
     <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" /> -->
 
-    <headbar v-if="!menuInLeft" style="width: 100%" />
+    <headbar v-if="!menuInLeft" class="headbar-wrapper" style="width: 100%" />
 
     <div class="right-menu">
-      <template v-if="device !== 'mobile'">
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
-      </template>
-
       <el-dropdown
         class="avatar-container right-menu-item hover-effect"
         trigger="click"
@@ -39,14 +35,12 @@
 import { mapGetters, mapState } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import Screenfull from '@/components/Screenfull'
 import Headbar from '@/layout/components/Headbar'
 
 export default {
   components: {
     // Breadcrumb,
     Hamburger,
-    Screenfull,
     Headbar
   },
   computed: {

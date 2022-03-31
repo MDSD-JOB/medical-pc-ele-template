@@ -189,3 +189,13 @@ aside {
 .multiselect--active {
   z-index: 1000 !important;
 }
+
+.head-nest-menu .el-menu-item {
+  color: $headSubMenuText !important;
+  &:hover {
+    background-color: $headSubMenuHover !important;
+  }
+  &.is-active {
+    color: $headSubMenuActiveText !important;
+  }
+}

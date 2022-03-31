@@ -1,30 +1,42 @@
 <template>
   <el-scrollbar wrap-class="scrollbar-wrapper">
-    <el-menu
-      mode="horizontal"
-      :default-active="activeMenu"
-      :background-color="variables.menuBg"
-      :text-color="variables.menuText"
-      :active-text-color="variables.menuActiveText"
-    >
-      <sidebar-item
-        v-for="route in permission_routes"
-        :key="route.path"
-        :item="route"
-        :base-path="route.path"
-      />
-    </el-menu>
+    <div class="headbar">
+      <div class="logo-wrapper">
+        <img :src="logo" alt="logo">
+        <img :src="badge" alt="badge">
+      </div>
+      <el-menu
+        mode="horizontal"
+        :default-active="activeMenu"
+        :background-color="variables.headMenuBg"
+        :text-color="variables.headMenuText"
+        :active-text-color="variables.headMenuActiveText"
+      >
+        <sidebar-item
+          v-for="route in permission_routes"
+          :key="route.path"
+          :item="route"
+          :base-path="route.path"
+        />
+      </el-menu>
+    </div>
   </el-scrollbar>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import SidebarItem from './SidebarItem'
-import variables from '@/styles/variables.scss'
+import variables from '@/assets/styles/variables.scss'
 
 export default {
   name: 'Headbar',
   components: { SidebarItem },
+  data() {
+    return {
+      logo: require('@/assets/images/headbar/logo.png'),
+      badge: require('@/assets/images/headbar/logo_docare.png')
+    }
+  },
   computed: {
     ...mapGetters(['permission_routes', 'sidebar']),
     activeMenu() {
@@ -47,3 +59,16 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.headbar {
+  display: flex;
+  align-items: center;
+  .logo-wrapper {
+    img {
+      width: 150px;
+      height: 40px;
+      line-height: 50px;
+    }
+  }
+}
+</style>
